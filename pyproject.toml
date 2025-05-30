@@ -18,8 +18,7 @@ classifiers = [
 dependencies = [
     "matplotlib",
     "pandas",
-    "numpy",
-    "os"
+    "numpy"
 ]
 
 [project.urls]
