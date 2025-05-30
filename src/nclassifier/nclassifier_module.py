@@ -2,10 +2,14 @@
 import numpy as np
 import pandas as pd
 import os
+from enum import Enum
 
 
-# In[3]:
+# In[23]:
 
+
+class classifier_type(Enum):
+  SHEPARD = os.path.abspath('./SHEPARD')
 
 def get_class(data:np.ndarray|pd.DataFrame, classifier:str='SHEPARD', show_graph:bool=False, code_indexes:bool = False, class_dict:dict=None, global_path:str = '')->pd.Series:
       '''extension
@@ -50,7 +54,7 @@ def get_class(data:np.ndarray|pd.DataFrame, classifier:str='SHEPARD', show_graph
 
             return X, Y
 
-      classifier = os.path.join(global_path,f'{classifier}.npz') if len(classifier.split('.'))==1 else classifier
+      classifier = os.path.join(global_path,f'{classifier}.npz') if len(classifier.split('.'))==1 else classifier_type[classifier].value
       classifier_arr = np.load(classifier)
       classifier_data = classifier_arr['classifier']
       class_dict = _array_to_class_dict(classifier_arr['attrs']) if class_dict==None else class_dict
