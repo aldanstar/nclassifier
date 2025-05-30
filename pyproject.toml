@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nclassifier"
+version = "0.1.0"
+description = "classifier for n-system"
+readme = "README.md"
+authors = [{ name = "Your Name", email = "your.email@example.com" }]
+license = { text = "Apache-2.0" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "matplotlib",
+    "pandas",
+    "numpy",
+    "os"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/aldanstar/nclassifier"
+"Bug Tracker" = "https://github.com/aldanstar/nclassifier/issues"
