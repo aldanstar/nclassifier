@@ -5,9 +5,9 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "nclassifier"
 version = "0.1.0"
-description = "classifier for n-system"
+description = "Triangular diagram classifier for scientific data"
 readme = "README.md"
-authors = [{ name = "Your Name", email = "your.email@example.com" }]
+authors = [{ name = "aldanstar", email = "aldanstar@gmail.com" }]
 license = { text = "Apache-2.0" }
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -18,9 +18,13 @@ classifiers = [
 dependencies = [
     "matplotlib",
     "pandas",
-    "numpy"
+    "numpy",
+    "importlib-resources"
 ]
 
 [project.urls]
 "Homepage" = "https://github.com/aldanstar/nclassifier"
 "Bug Tracker" = "https://github.com/aldanstar/nclassifier/issues"
+
+[tool.setuptools.package-data]
+nclassifier = ["data/*.npz"]

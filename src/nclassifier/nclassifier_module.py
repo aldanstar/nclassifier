@@ -2,14 +2,12 @@
 import numpy as np
 import pandas as pd
 import os
-from enum import Enum
+import importlib.resources
+from importlib.resources import files, as_file
 
 
-# In[23]:
+# In[5]:
 
-
-class classifier_type(Enum):
-  SHEPARD = os.path.abspath('./SHEPARD')
 
 def get_class(data:np.ndarray|pd.DataFrame, classifier:str='SHEPARD', show_graph:bool=False, code_indexes:bool = False, class_dict:dict=None, global_path:str = '')->pd.Series:
       '''extension
@@ -54,8 +52,28 @@ def get_class(data:np.ndarray|pd.DataFrame, classifier:str='SHEPARD', show_graph
 
             return X, Y
 
-      classifier = os.path.join(global_path,f'{classifier}.npz') if len(classifier.split('.'))==1 else classifier_type[classifier].value
-      classifier_arr = np.load(classifier)
+      # Загрузка классификатора
+      if classifier.endswith('.npz'):
+          # Пользовательский файл по абсолютному пути
+          classifier_arr = np.load(classifier)
+      else:
+          # Стандартный классификатор из пакета
+          resource_path = files('nclassifier.data').joinpath(f'{classifier}.npz')
+
+          if not resource_path.is_file():
+              # Автоматический поиск доступных классификаторов
+              available = [f.stem for f in files('nclassifier.data').iterdir()
+                          if f.is_file() and f.suffix == '.npz']
+              raise ValueError(
+                  f"Classifier '{classifier}' not found. "
+                  f"Available classifiers: {', '.join(available)}"
+              )
+
+          with as_file(resource_path) as file_path:
+              classifier_arr = np.load(file_path)
+
+
+
       classifier_data = classifier_arr['classifier']
       class_dict = _array_to_class_dict(classifier_arr['attrs']) if class_dict==None else class_dict
       param_count = classifier_arr['params'][0]
@@ -115,5 +133,10 @@ def get_class(data:np.ndarray|pd.DataFrame, classifier:str='SHEPARD', show_graph
         result.index = indexes
       result.name = label
       return result
+
+def available_classifiers() -> list[str]:
+    """Возвращает список доступных классификаторов в пакете"""
+    return [f.stem for f in files('nclassifier.data').iterdir()
+            if f.is_file() and f.suffix == '.npz']
 
 
